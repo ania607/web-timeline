@@ -86,8 +86,9 @@ sources_y <- vector(mode = "character", length = 0) # ...источников и
 urls_y <- vector(mode = "character", length = 0) # ... рабочих ссылок
 
 
-for (i in request_y){
-  for  (n in 2017:2026){
+for (n in 2017:2026){
+  # Sys.sleep(120)
+  for  (i in request_y){
     # URL страницы поиска в Яндекс:
     fileURL <- paste(i, n,
                      "&lr=213&clid=2008266-300&win=122",
@@ -97,7 +98,9 @@ for (i in request_y){
     html <- getURL(fileURL)
     # разбираем как html
     doc <- htmlTreeParse(html, useInternalNodes = T)
-    Sys.sleep(20)
+    
+    # Sys.sleep(40)
+    
     # корневой элемент
     rootNode <- xmlRoot(doc)
     # Теперь следует избавиться от записей, предоставленных "Яндекс Новости", а
@@ -161,7 +164,7 @@ for (i in request_y){
       sources_y <- c(sources_y, h)
     }
 
-    Sys.sleep(20)
+    # Sys.sleep(40)
     
   }
   
@@ -176,7 +179,4 @@ DF$Header <- gsub(' [/||] .*$', '', DF$Header)
 DF$Header <- gsub('[...]', '', DF$Header)
 
 # запишем результат в файл
-if (!file.exists('./TimelineY.csv')) {
-  file.create('./TimelineY.csv')
-}
-write.csv(DF, './TimelineY.csv', row.names = F)
+write.csv(DF, './Timeline.csv', row.names = F)
